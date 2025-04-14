@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmoochezCo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css">
+    <script src="https://kit.fontawesome.com/d5e11d398a.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+
+<section class="sub-header">
+    <nav>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='smoochies_logo.png') }}"></a>
+        <div class="nav-links" id="navLinks">
+            <i class="fa-solid fa-x" onclick="hideMenu()"></i>
+            <ul>
+                <li><a href="{{ url_for('home') }}">HOME</a></li>
+                <li><a href="{{ url_for('about') }}">ABOUT</a></li>
+                <li><a href="{{ url_for('gallery') }}">GALLERY</a></li>
+                <li><a href="{{ url_for('custom_order_page') }}">CUSTOM ORDER</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('materials') }}">MATERIALS</a></li>
+                    <li><a href="{{ url_for('logout') }}">LOGOUT</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">LOGIN</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <i class="fa-solid fa-bars" onclick="showMenu()"></i>
+    </nav>
+    <h1>Gallery</h1>
+</section>
+
+<section class="slide">
+    <div class="wrapper">
+        <i id="left" class="fa-solid fa-angle-left"></i>
+        <div class="carousel">
+            <img src="{{ url_for('static', filename='marylandtee-2025-02-24.png') }}" alt="img" draggable="false">
+            <img src="{{ url_for('static', filename='pickletee-2024-02-24.png') }}" alt="img" draggable="false">
+            <img src="{{ url_for('static', filename='smoochez_pic.png') }}" alt="img" draggable="false">
+            <img src="{{ url_for('static', filename='smooches_pic2.png') }}" alt="img" draggable="false">
+            <img src="{{ url_for('static', filename='smooches_pic3.png') }}" alt="img" draggable="false">
+            <img src="{{ url_for('static', filename='smooches_pic4.png') }}" alt="img" draggable="false">
+            <img src="{{ url_for('static', filename='smooches_pic5.png') }}" alt="img" draggable="false">
+        </div>
+        <i id="right" class="fa-solid fa-angle-right"></i>
+    </div>
+</section>
+
+<!-- JS for toggle menu -->
+<script>
+    var navLinks = document.getElementById("navLinks");
+    function showMenu(){ navLinks.style.right = "0"; }
+    function hideMenu(){ navLinks.style.right = "-200px"; }
+</script>
+
+</body>
+</html>

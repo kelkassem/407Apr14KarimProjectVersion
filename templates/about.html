@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmoochezCo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css">
+    <script src="https://kit.fontawesome.com/d5e11d398a.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<section class="sub-header">
+    <nav>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='smoochies_logo.png') }}"></a>
+        <div class="nav-links" id="navLinks">
+            <i class="fa-solid fa-x" onclick="hideMenu()"></i>
+            <ul>
+                <li><a href="{{ url_for('home') }}">HOME</a></li>
+                <li><a href="{{ url_for('about') }}">ABOUT</a></li>
+                <li><a href="{{ url_for('gallery') }}">GALLERY</a></li>
+                <li><a href="{{ url_for('custom_order_page') }}">CUSTOM ORDER</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('materials') }}">MATERIALS</a></li>
+                    <li><a href="{{ url_for('logout') }}">LOGOUT</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">LOGIN</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <i class="fa-solid fa-bars" onclick="showMenu()"></i>
+    </nav>
+    <h1>About Smoochez Clothing</h1>
+</section>
+
+<!-- our mission -->
+<section class="our-mission">
+    <h1>My Mission</h1>
+    <p>
+        Summertime is here and I was feeling quite bored but very creative, so I am excited to launch my clothing company, Smoochez!<br><br>
+
+        ✨ There will be several clothing drops this summer (and hopefully beyond), but I have put so much effort into each piece and hope you all purchase! Each item is hand-stitched with fabric, ribbon, cut-outs, and more :)<br><br>
+
+        🛍️ I love love love the streetwear and clothes I see on Pinterest and I wanted to make a more unisex and affordable version, especially for college students - and each item has my logo and brand stitched on!<br><br>
+
+        💋Anika
+    </p>
+</section>
+
+<!-- footer -->
+<section class="footer">
+    <h4>Footer</h4>
+    <div class="icons">
+        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-linkedin"></i>
+    </div>
+</section>
+
+<!-- JS for toggle menu -->
+<script>
+    var navLinks = document.getElementById("navLinks");
+    function showMenu() {
+        navLinks.style.right = "0";
+    }
+    function hideMenu() {
+        navLinks.style.right = "-200px";
+    }
+</script>
+
+</body>
+</html>

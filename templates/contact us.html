@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmoochezCo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/d5e11d398a.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<section class="sub-header">
+    <nav>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='smoochies_logo.png') }}"></a>
+        <div class="nav-links" id="navLinks">
+            <i class="fa-solid fa-x" onclick="hideMenu()"></i>
+            <ul>
+                <li><a href="{{ url_for('home') }}">HOME</a></li>
+                <li><a href="{{ url_for('about') }}">ABOUT</a></li>
+                <li><a href="{{ url_for('gallery') }}">GALLERY</a></li>
+                <li><a href="{{ url_for('custom_order_page') }}">CUSTOM ORDER</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('materials') }}">MATERIALS</a></li>
+                    <li><a href="{{ url_for('logout') }}">LOGOUT</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">LOGIN</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <i class="fa-solid fa-bars" onclick="showMenu()"></i>
+    </nav>
+    <h1>Custom Order Requests</h1>
+</section>
+
+<div class="contact-col" id="form-section">
+    <form id="customOrderForm">
+        <header><h1>Contact</h1></header>
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email address" required>
+
+        <header><h1>Order Details</h1></header>
+        <input type="text" name="item_id" placeholder="Item ID" required>
+        <input type="text" name="item_type" placeholder="Type of Item" required>
+        <textarea rows="8" name="item_description" placeholder="Description Including Size and Color" required></textarea>
+
+        <header><h1>Shipping Information</h1></header>
+        <input type="text" name="address1" placeholder="Address Line 1" required>
+        <input type="text" name="address2" placeholder="Address Line 2">
+        <input type="text" name="city" placeholder="City" required>
+        <input type="text" name="state" placeholder="State" required>
+        <input type="text" name="zip" placeholder="Zip Code" required>
+
+        <button type="submit" class="hero-btn red-btn">Send Message</button>
+    </form>
+</div>
+
+<div id="messageSent" style="display:none; text-align:center; padding:50px;">
+    <h2 style="font-family: 'Bebas Neue', cursive;">MESSAGE SENT</h2>
+    <p style="font-family: 'Bebas Neue', cursive;">Once confirmed, an email will be sent regarding payment method</p>
+    <button onclick="resetForm()" class="hero-btn red-btn">Make another request</button>
+</div>
+
+<section class="footer">
+    <h4>Footer</h4>
+    <div class="icons">
+        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-linkedin"></i>
+    </div>
+</section>
+
+<script>
+    var navLinks = document.getElementById("navLinks");
+    function showMenu(){ navLinks.style.right = "0"; }
+    function hideMenu(){ navLinks.style.right = "-200px"; }
+
+    // AJAX form submission
+    $(document).ready(function() {
+        $("#customOrderForm").submit(function(event) {
+            event.preventDefault();
+
+            const formData = {
+                name: $('input[name="name"]').val(),
+                email: $('input[name="email"]').val(),
+                item_id: $('input[name="item_id"]').val(),
+                item_type: $('input[name="item_type"]').val(),
+                item_description: $('textarea[name="item_description"]').val(),
+                address1: $('input[name="address1"]').val(),
+                address2: $('input[name="address2"]').val(),
+                city: $('input[name="city"]').val(),
+                state: $('input[name="state"]').val(),
+                zip: $('input[name="zip"]').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/user',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    $("#form-section").hide();
+                    $("#messageSent").show();
+                },
+                error: function(xhr) {
+                    alert("Something went wrong: " + xhr.responseText);
+                }
+            });
+        });
+    });
+
+    function resetForm() {
+        document.getElementById("customOrderForm").reset();
+        document.getElementById("form-section").style.display = "block";
+        document.getElementById("messageSent").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
