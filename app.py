@@ -145,6 +145,17 @@ def get_orders():
 
     return jsonify(order_dicts)
 
+# --- Delete User (Admin Only) ---
+@app.route('/user/<int:id>', methods=['DELETE'])
+@login_required
+@role_required('Admin')
+def delete_user(id):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM orders WHERE id = %s", [id])
+    mysql.connection.commit()
+    cur.close()
+    return jsonify(message="Order deleted successfully")
+
 # Static Pages
 @app.route('/about')
 def about():
